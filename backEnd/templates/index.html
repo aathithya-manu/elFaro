@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I'm elFaro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #007BFF;
+            --primary-dark: #0056b3;
+            --bg-color: #f0f2f5;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --text-light: #6c757d;
+            --border-color: #e0e0e0;
+            --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-medium: 0 8px 15px rgba(0, 0, 0, 0.1);
+            --success-color: #28a745;
+            --error-color: #dc3545;
+            --font-family: 'Poppins', sans-serif;
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            gap: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-light);
+            transition: transform var(--transition-speed) ease-in-out, box-shadow var(--transition-speed) ease-in-out;
+            border: 1px solid var(--border-color);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        h2 i {
+            margin-right: 10px;
+        }
+
+        label {
+            display: block;
+            margin-top: 1rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea,
+        input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+            outline: none;
+        }
+        
+        input[type="file"] {
+            padding: 10px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 250px;
+        }
+
+        button, input[type="submit"] {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color var(--transition-speed), transform 0.1s ease-in-out;
+            margin-top: 1rem;
+        }
+
+        button:hover, input[type="submit"]:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        button:active, input[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        button i, input[type="submit"] i {
+            margin-right: 8px;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-icon-right i {
+            margin-right: 0;
+            margin-left: 8px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .map-container {
+            position: relative;
+            height: 400px;
+            margin-top: 10px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid var(--border-color);
+        }
+
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+        
+        .map-overlay-button {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+        }
+
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .report-container {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--primary-color);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            white-space: pre-line;
+            font-family: monospace;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .label-container {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: 1rem;
+            font-style: italic;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card, header {
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        .report-container, .alert {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        /* Responsive design */
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: 1fr 1fr;
+            }
+            .full-width {
+                grid-column: 1 / -1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header class="full-width">
+            <h1><i class="fas fa-city"></i>El Faro</h1>
+            <p>Report local civic issues easily with the power of AI and location services.</p>
+        </header>
+
+        {% if message %}
+            <div class="full-width alert {% if '❌' in message %}alert-error{% else %}alert-success{% endif %}">
+                <i class="fas {% if '❌' in message %}fa-times-circle{% else %}fa-check-circle{% endif %}"></i>
+                <span>{{ message }}</span>
+            </div>
+        {% endif %}
+
+        {% if error %}
+            <div class="full-width alert alert-error">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>{{ error }}</span>
+            </div>
+        {% endif %}
+
+        <div class="card full-width">
+            <h2><i class="fas fa-camera"></i> Report an Issue</h2>
+            <form action="/analyze_image" method="post" enctype="multipart/form-data">
+                <label for="image">Upload image of the issue:</label>
+                <input type="file" id="image" name="image" accept="image/*" required>
+
+                <div class="map-container">
+                    <div id="map"></div>
+                    <div class="loading-overlay" id="map-loading">
+                        <div class="loading-spinner"></div>
+                    </div>
+                    <div class="map-overlay-button">
+                        <button type="button" id="location-btn" onclick="getCurrentLocation()" disabled>
+                            <i class="fas fa-location-arrow"></i> Use My Current Location
+                        </button>
+                    </div>
+                </div>
+
+                <label for="location_address">Selected Address:</label>
+                <input type="text" id="location_address" name="location_address" readonly>
+
+                <input type="hidden" name="location_latlng" id="location_latlng">
+                
+                <input type="submit" value="Analyze Image & Generate Report">
+            </form>
+        </div>
+
+        {% if report %}
+            <div class="card full-width">
+                {% if not submitted %}
+                    <h2><i class="fas fa-file-alt"></i> Auto-Generated Report</h2>
+                    <form action="/submit_report" method="post" class="report-form">
+                        <textarea name="edited_report">{{ report }}</textarea>
+                        <input type="hidden" name="recipient_email" value="{{ authority_email }}">
+                        <div class="button-group">
+                            <input type="submit" value="Submit Edited Report">
+                        </div>
+                    </form>
+                    {% if labels %}
+                        <div class="label-container">
+                            <strong>Detected Labels:</strong> {{ labels | join(', ') }}
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <h2><i class="fas fa-check-circle"></i> Submitted Report</h2>
+                    <div class="report-container">
+                        {{ report }}
+                    </div>
+                    
+                    <div class="button-group">
+                        <form action="/download_pdf" method="post" class="download-form">
+                            <input type="hidden" name="report_to_download" value="{{ report }}">
+                            <button type="submit"><i class="fas fa-download"></i> Download PDF</button>
+                        </form>
+                        
+                        <form action="/send_email" method="post" class="email-form">
+                            <input type="email" id="recipient_email" name="recipient_email" value="{{ authority_email }}" placeholder="Recipient Email" required>
+                            <input type="hidden" name="report_to_send" value="{{ report }}">
+                            <button type="submit" class="btn-icon-right"><i class="fas fa-paper-plane"></i> Send Email</button>
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        let map, marker, geocoder, searchBox;
+        let isGoogleMapsLoaded = false;
+
+        // Global callback function for Google Maps API
+        window.initMap = function() {
+            console.log('Google Maps API loaded successfully');
+            isGoogleMapsLoaded = true;
+            
+            const indiaCenter = { lat: 20.5937, lng: 78.9629 };
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: indiaCenter,
+                zoom: 5,
+                mapTypeControl: true,
+                streetViewControl: true,
+                zoomControl: true,
+                fullscreenControl: false,
+            });
+
+            geocoder = new google.maps.Geocoder();
+
+            // Search box functionality
+            const input = document.createElement("input");
+            input.type = "text";
+            input.placeholder = "Search for a place";
+            input.style.cssText = "width: 100%; max-width: 400px; padding: 10px; margin: 10px; border-radius: 8px; border: 1px solid var(--border-color); font-family: var(--font-family); box-shadow: var(--shadow-light);";
+            map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
+
+            searchBox = new google.maps.places.SearchBox(input);
+            searchBox.addListener("places_changed", () => {
+                const places = searchBox.getPlaces();
+                if (!places || !places.length) return;
+
+                const location = places[0].geometry.location;
+                setMarker(location);
+                reverseGeocode(location);
+                map.setCenter(location);
+                map.setZoom(17);
+            });
+
+            map.addListener("click", (e) => {
+                setMarker(e.latLng);
+                reverseGeocode(e.latLng);
+            });
+
+            // Hide loading overlay and enable button
+            document.getElementById('map-loading').style.display = 'none';
+            document.getElementById('location-btn').disabled = false;
+        };
+
+        // Handle Google Maps API loading errors
+        window.gm_authFailure = function() {
+            console.error('Google Maps authentication failed');
+            document.getElementById('map-loading').innerHTML = '<div style="color: red; text-align: center;">Maps failed to load. Please check your API key.</div>';
+        };
+
+        function setMarker(latlng) {
+            if (!isGoogleMapsLoaded) {
+                console.error('Google Maps not loaded yet');
+                return;
+            }
+
+            if (!marker) {
+                marker = new google.maps.Marker({ 
+                    map: map, 
+                    animation: google.maps.Animation.DROP 
+                });
+            }
+            marker.setPosition(latlng);
+            document.getElementById("location_latlng").value = `${latlng.lat()},${latlng.lng()}`;
+        }
+
+        function reverseGeocode(latlng) {
+            if (!isGoogleMapsLoaded || !geocoder) {
+                console.error('Geocoder not available');
+                return;
+            }
+
+            geocoder.geocode({ location: latlng }, (results, status) => {
+                const addressField = document.getElementById("location_address");
+                if (status === "OK" && results[0]) {
+                    addressField.value = results[0].formatted_address;
+                } else {
+                    addressField.value = "Unable to determine address";
+                    console.warn("Geocoder failed due to: " + status);
+                }
+            });
+        }
+
+        function getCurrentLocation() {
+            if (!isGoogleMapsLoaded) {
+                alert("Google Maps is still loading. Please wait a moment and try again.");
+                return;
+            }
+
+            if (!navigator.geolocation) {
+                alert("Geolocation is not supported by your browser.");
+                return;
+            }
+
+            // Disable button during location fetch
+            const locationBtn = document.getElementById('location-btn');
+            const originalText = locationBtn.innerHTML;
+            locationBtn.disabled = true;
+            locationBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Getting Location...';
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const userLoc = new google.maps.LatLng(
+                        position.coords.latitude, 
+                        position.coords.longitude
+                    );
+                    setMarker(userLoc);
+                    map.setCenter(userLoc);
+                    map.setZoom(17);
+                    reverseGeocode(userLoc);
+                    
+                    // Re-enable button
+                    locationBtn.disabled = false;
+                    locationBtn.innerHTML = originalText;
+                },
+                (error) => {
+                    console.error('Geolocation error:', error);
+                    let errorMessage = "Failed to retrieve your location. ";
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            errorMessage += "Please allow location access.";
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            errorMessage += "Location information is unavailable.";
+                            break;
+                        case error.TIMEOUT:
+                            errorMessage += "Location request timed out.";
+                            break;
+                        default:
+                            errorMessage += "An unknown error occurred.";
+                    }
+                    alert(errorMessage);
+                    
+                    // Re-enable button
+                    locationBtn.disabled = false;
+                    locationBtn.innerHTML = originalText;
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 300000
+                }
+            );
+        }
+
+        // Fallback: Try to load Google Maps if it fails
+        function checkGoogleMapsLoaded() {
+            setTimeout(() => {
+                if (!isGoogleMapsLoaded) {
+                    console.error('Google Maps failed to load within expected time');
+                    document.getElementById('map-loading').innerHTML = 
+                        '<div style="color: red; text-align: center; padding: 20px;">' +
+                        'Google Maps failed to load.<br>' +
+                        'Please check your internet connection and API key.<br>' +
+                        '<button onclick="location.reload()" style="margin-top: 10px;">Retry</button>' +
+                        '</div>';
+                }
+            }, 10000); // 10 second timeout
+        }
+
+        // Check if Maps loaded after page load
+        window.addEventListener('load', checkGoogleMapsLoaded);
+    </script>
+
+    <!-- Load Google Maps API with proper error handling -->
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key={{google_maps_api_key}}&libraries=places&callback=initMap"
+        onerror="document.getElementById('map-loading').innerHTML='<div style=\'color: red; text-align: center; padding: 20px;\'>Failed to load Google Maps API.<br>Please check your API key and internet connection.</div>'">
+    </script>
+</body>
+</html>

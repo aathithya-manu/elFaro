@@ -1,0 +1,6 @@
+flask
+flask-cors
+google-generativeai
+google-cloud-vision
+reportlab
+mailjet_rest
