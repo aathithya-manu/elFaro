@@ -173,7 +173,7 @@ def send_email_with_mailjet(recipient, report):
       'Messages': [
         {
           "From": {
-            "Email": "elfaro.noreply@gmail.com",
+            "Email": "info@el-faro.tech",
             "Name": "El faro Admin"
           },
           "To": [
@@ -216,6 +216,3 @@ def send_email():
         image_url=None,
         message=message
     )
-
-if __name__ == '__main__':
-    app.run(debug=True)
