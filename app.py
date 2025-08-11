@@ -48,13 +48,14 @@ def analyze_image():
 
     # Create the prompt
     prompt = f"""
-You are a civic issue reporting assistant tasked with drafting formal complaint reports addressed to the appropriate Indian civic authority based on visual evidence.
-Use the information below to write a concise, professional, and respectful civic complaint.If the labels {label_descriptions} do not show any relevance to any civic issue then Simply respond "The Uploaded Image is not clearly understandable.\nIf you are trying to upload any image relevant to any civic issue, try again with any different image from dfferent angle!\nDont try to Upload any image irrelevant to the scope of this webApp"
+You are a civic issue reporting assistant tasked with drafting formal complaint reports addressed to the appropriate civic authority of that particular Location based on visual evidence. Use the information below to write a concise, professional, and respectful civic complaint.
 
 - Use a formal tone and structure suitable for government correspondence in India.
 - Clearly identify and name the appropriate civic authority responsible for the issue, based on the location provided. Do not generically refer to "the concerned authority."
 - Do not speculate about causes of the issue (e.g., construction, natural disasters) unless such causes are explicitly suggested by the labels.
 - Do not use overly emotional or exaggerated language.
+- and if the labels found doen't match to a complaint issue that a govt authority should address or if not a genuine govt concern,then just reply with a formal and polite response and not a letter ,to the user about the aim of this report portal and to try load a genuine civic picture and if so then signature the reponse witb regards Team elFaro.
+- and too dont specify about the identified labels of the pic or speify about what the picture really is ,if they are irrevelant to our portal accordance.
 - End the report with the signature: "Sincerely,\nA Concerned Citizen"
 
 ---
@@ -78,14 +79,16 @@ Based on the above, draft a formal civic complaint email/report.
     clean_text = unescape(
         raw_text.replace("<br>", "\n").replace("<br/>", "\n").replace("<br />", "\n")
     )
-
+    
     email_prompt = f"""
     You are an AI assistant that helps identify the most appropriate civic authority and their email address to send a formal complaint to.
 
     Please do the following:
     - Based on the report below, determine which civic body or department should handle the issue (like municipal corporation, public works department, etc.).
     - Predict the *official email address* of that authority, based on the location mentioned in the report.
-    - If unsure, provide the most likely official-sounding email (like commissioner.palakkad@kerala.gov.in or info@bbmp.gov.in).
+    - do check with available national helpdeks and forums to find the most appropriate civic authority to the given location and report.
+    -if the report is a reponse to the user that the portal is for complaints and the uploaded picture is not accord to the functionality rather than a complaint email, respond with just " " (i.e just an empty string)
+    - If unsure, provide the most likely official-sounding email (like commissioner.palakkad@kerala.gov.in or info@bbmp.gov.in), but dont provide any fake email, do check that they really belong to the concerned authority.
 
     Return just the email in the format:
     Authority Email: <email_here>
