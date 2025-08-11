@@ -1,0 +1,4 @@
+#Ignore this key, it contains the credential to access Gloud Vision API
+vision-key.json             
+#Ignore the environmental variables
+.env
