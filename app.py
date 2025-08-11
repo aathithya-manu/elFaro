@@ -79,14 +79,16 @@ Based on the above, draft a formal civic complaint email/report.
     clean_text = unescape(
         raw_text.replace("<br>", "\n").replace("<br/>", "\n").replace("<br />", "\n")
     )
-
+    
     email_prompt = f"""
     You are an AI assistant that helps identify the most appropriate civic authority and their email address to send a formal complaint to.
 
     Please do the following:
     - Based on the report below, determine which civic body or department should handle the issue (like municipal corporation, public works department, etc.).
     - Predict the *official email address* of that authority, based on the location mentioned in the report.
-    - If unsure, provide the most likely official-sounding email (like commissioner.palakkad@kerala.gov.in or info@bbmp.gov.in).
+    - do check with available national helpdeks and forums to find the most appropriate civic authority to the given location and report.
+    -if the report is a reponse to the user that the portal is for complaints and the uploaded picture is not accord to the functionality rather than a complaint email, respond with just " " (i.e just an empty string)
+    - If unsure, provide the most likely official-sounding email (like commissioner.palakkad@kerala.gov.in or info@bbmp.gov.in), but dont provide any fake email, do check that they really belong to the concerned authority.
 
     Return just the email in the format:
     Authority Email: <email_here>
